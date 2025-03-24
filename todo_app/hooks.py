@@ -2,7 +2,7 @@ app_name = "todo_app"
 app_title = "Todo App"
 app_publisher = "Peris Oduol"
 app_description = "todo app "
-app_email = "oduolpepe628@gmail.com"
+app_email = "oduolpepe618@gmail.com"
 app_license = "mit"
 
 # Apps
@@ -137,13 +137,21 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+    "Quotation": {
+        "on_submit": "todo_app.utils.apis.selling.sales_order.convert_quotation_to_sales_order"
+    },
+    "Sales Order": {
+        "on_submit": "todo_app.utils.apis.selling.sales_order.create_delivery_note"
+    },
+    "Delivery Note": {
+        "on_submit": "todo_app.utils.apis.selling.sales_order.create_sales_invoice"
+    },
+    "Sales Invoice": {
+        "on_submit": "todo_app.utils.apis.selling.sales_order.record_payment_entry"
+    }
+}
+
 
 # Scheduled Tasks
 # ---------------
