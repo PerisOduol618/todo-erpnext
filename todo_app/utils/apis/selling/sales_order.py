@@ -102,3 +102,30 @@ def create_sales_invoice(sales_order_name, event=None):
     print(f"✅ Sales Invoice Created: {sales_invoice.name}")
     return sales_invoice.name
 
+
+def create_delivery_note(sales_order_name,event=None):
+    """
+    Creates a Delivery Note from a Sales Order.
+
+   
+    """
+    sales_order = frappe.get_doc("Sales Order", sales_order_name)
+
+    delivery_note = frappe.get_doc({
+        "doctype": "Delivery Note",
+        "customer": sales_order.customer,
+        "posting_date": today(),
+        "items": [
+            {
+                "item_code": item.item_code,
+                "qty": item.qty,
+                "rate": item.rate
+            } for item in sales_order.items
+        ]
+    })
+    delivery_note.insert()
+    delivery_note.submit()
+    frappe.db.commit()
+    
+    print(f"✅ Delivery Note Created: {delivery_note.name}")
+    return delivery_note.name
